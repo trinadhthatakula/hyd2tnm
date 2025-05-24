@@ -46,12 +46,11 @@ This project is a single HTML file, making it incredibly easy to set up and use!
 
 1.  **Clone the repository:**
     ```bash
-    git clone [https://github.com/your-username/hyderabad-tiruvannamalai-infographic.git](https://github.com/your-username/hyderabad-tiruvannamalai-infographic.git)
+    git clone [[https://github.com/trinadhthatakula/hyd2tnm.git](https://github.com/trinadhthatakula/hyd2tnm.git)
     ```
-    (Replace `your-username` with the actual GitHub username if this project were hosted)
 2.  **Navigate to the project directory:**
     ```bash
-    cd hyderabad-tiruvannamalai-infographic
+    cd hyd2tnm
     ```
 3.  **Open `index.html`:** Simply open the `index.html` file in your preferred web browser.
 
