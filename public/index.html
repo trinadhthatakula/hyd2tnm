@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infographic: Hyderabad to Tiruvannamalai Travel Options</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- 
+        Infographic Plan Summary:
+        The infographic visualizes travel options from Hyderabad to Tiruvannamalai based on the provided travel guide.
+        Sections:
+        1.  Introduction: Setting the stage for the journey.
+        2.  Direct Train Routes: Analyzing direct train services, their durations, and key considerations.
+        3.  Multi-Modal Route via Tirupati: Highlighting the flexibility and efficiency of train to Tirupati then bus to Tiruvannamalai.
+        4.  Other Key Hubs (Katpadi & Villupuram): Exploring alternative connection points.
+        5.  Route Choice Flow: A visual guide to help travelers decide on the best route.
+        6.  Essential Travel Tips: Key advice for a smooth journey.
+        7.  Conclusion: Summarizing the best options.
+        Color Palette Chosen: "Energetic & Playful" (Primary Teal: #00A896, Secondary Orange: #FF6F61, Accents: Yellow #FFD700, Purple #A4508B, Pink #FF85A1)
+        Visualization Choices Summary (Confirming NO SVG, NO MERMAID JS):
+        -   Section 1 (Intro): Large Text (HTML/Tailwind) - Goal: Inform.
+        -   Section 2 (Direct Trains): Bar Chart (Chart.js Canvas) for travel times; HTML Table for train details - Goal: Compare, Organize.
+        -   Section 3 (Tirupati Route): Pictograph with Unicode (HTML/Tailwind) for service comparison; Donut Chart (Chart.js Canvas) for bus operator types (simplified) or Big Numbers for bus stats - Goal: Compare, Inform.
+        -   Section 4 (Other Hubs): Grouped Bar Chart (Chart.js Canvas) for onward travel times - Goal: Compare.
+        -   Section 5 (Route Choice Flow): Structured HTML/CSS with Tailwind for a simplified flowchart - Goal: Organize.
+        -   Section 6 (Travel Tips): Styled HTML List with Unicode icons - Goal: Organize.
+        -   Section 7 (Conclusion): Large Text (HTML/Tailwind) for key takeaway - Goal: Inform.
+        Confirmation: NEITHER Mermaid JS NOR SVG were used anywhere in this output. All charts are Chart.js (Canvas), diagrams are HTML/CSS.
+        New Feature: Added an LLM-powered section for "Local Insights & Tips for Tiruvannamalai" using the Gemini API.
+        Update: Added a date picker to filter direct train options by day of the week.
+    -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F3F4F6; /* bg-gray-100 */
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px; /* max-w-2xl */
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px; /* Default height, can be responsive e.g., h-72 md:h-96 */
+            max-height: 400px; /* max-h-96 */
+        }
+        @media (min-width: 768px) { /* md breakpoint */
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .text-teal-700 { color: #00796B; }
+        .bg-teal-600 { background-color: #00A896; }
+        .text-orange-600 { color: #FF6F61; }
+        .bg-orange-500 { background-color: #FF6F61; }
+        .text-yellow-500 { color: #FFD700; }
+        .text-purple-600 { color: #A4508B; }
+        .text-pink-500 { color: #FF85A1; }
+
+        .flowchart-step {
+            background-color: white;
+            border: 2px solid #00A896; /* Teal border */
+            padding: 1rem;
+            border-radius: 0.5rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 1rem;
+            position: relative;
+        }
+        .flowchart-connector {
+            width: 2px;
+            background-color: #A4508B; /* Purple connector */
+            height: 2rem;
+            margin: 0 auto;
+        }
+        .flowchart-decision {
+            background-color: #FFFBEB; /* Light yellow for decisions */
+            border-color: #FFD700; /* Yellow border */
+        }
+        .flowchart-option {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border: 1px solid #A4508B; /* Purple */
+            border-radius: 0.5rem;
+            margin: 0.5rem;
+            background-color: #F3E8FF; /* Light purple */
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <header class="bg-teal-600 text-white p-6 shadow-lg">
+        <div class="container mx-auto text-center">
+            <h1 class="text-3xl md:text-4xl font-bold">Hyderabad to Tiruvannamalai</h1>
+            <p class="text-xl mt-2">Your Comprehensive Travel Options Infographic</p>
+        </div>
+    </header>
+
+    <main class="container mx-auto p-4 md:p-8">
+
+        <section id="intro" class="mb-12 text-center">
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-2xl font-bold text-teal-700 mb-4">Navigating Your Journey</h2>
+                <p class="text-lg mb-4">Planning a trip from Hyderabad to Tiruvannamalai involves choosing between direct routes and flexible multi-modal options. This guide visualizes key data to help you make an informed decision for the approximately <strong class="text-orange-600">870-880 km</strong> journey.</p>
+                <p class="text-md">Understanding train schedules, connection points, and alternative transport modes is crucial for a smooth travel experience.</p>
+            </div>
+        </section>
+
+        <section id="date-picker-section" class="mb-12">
+            <div class="bg-white rounded-lg shadow-md p-6 text-center">
+                <h2 class="text-2xl font-bold text-teal-700 mb-4">Find Trains for Your Day</h2>
+                <p class="text-lg mb-4">Select a date to see direct train options available on that specific day of the week.</p>
+                <div class="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+                    <label for="travelDate" class="text-xl font-semibold text-purple-600">Select Date:</label>
+                    <input type="date" id="travelDate" class="p-3 border border-gray-300 rounded-lg text-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent">
+                </div>
+                <p class="text-sm text-gray-600 mt-4">Note: "Special" (SPL) train schedules can vary. Always verify real-time status closer to your travel date.</p>
+            </div>
+        </section>
+
+        <section id="direct-trains" class="mb-12">
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-2xl font-bold text-teal-700 mb-6 text-center">Direct Train Routes: The Single-Ticket Journey</h2>
+                <p class="text-center mb-6">Below are the direct train services from Hyderabad and its vicinity to Tiruvannamalai (TNM) or nearby Villupuram (VM) available on your selected day.</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                    <div>
+                        <h3 class="text-xl font-semibold text-purple-600 mb-3 text-center">Travel Time Comparison (Filtered Trains)</h3>
+                        <div class="chart-container h-[350px] md:h-[400px]">
+                            <canvas id="directTrainsTimeChart"></canvas>
+                        </div>
+                        <p class="text-sm text-gray-600 mt-2 text-center">Illustrates typical journey durations for services available on the selected day.</p>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold text-purple-600 mb-3 text-center">Available Direct/Near-Direct Services</h3>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full bg-white border border-gray-300 rounded-lg">
+                                <thead class="bg-teal-600 text-white">
+                                    <tr>
+                                        <th class="py-2 px-3 text-left">Train Name (Number)</th>
+                                        <th class="py-2 px-3 text-left">Typical Duration</th>
+                                        <th class="py-2 px-3 text-left">Actual Destination</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="directTrainsTableBody" class="text-gray-700">
+                                    </tbody>
+                            </table>
+                        </div>
+                         <div class="mt-4 p-3 bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 rounded">
+                            <p><strong class="font-semibold">Important:</strong> Some "direct" trains terminate at Villupuram (VM), approx. 56 km from Tiruvannamalai. Plan for an onward bus or taxi if your train ends at VM.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="tirupati-route" class="mb-12">
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-2xl font-bold text-teal-700 mb-6 text-center">The Flexible Tirupati Route: Train + Bus</h2>
+                <p class="text-center mb-6">For greater flexibility and often faster overall travel, consider taking a train from Hyderabad to Tirupati (TPTY), followed by a bus to Tiruvannamalai. This route benefits from numerous daily train services to Tirupati.</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+                    <div>
+                        <h3 class="text-xl font-semibold text-purple-600 mb-3 text-center">Hyderabad to Tirupati by Train</h3>
+                        <div class="text-center p-4 border rounded-lg bg-gray-50">
+                            <p class="text-4xl font-bold text-orange-600 mb-2">20+</p>
+                            <p class="text-gray-700">Train services (Daily & Weekly) from Hyderabad to Tirupati area.</p>
+                            <div class="mt-3 text-2xl text-teal-700">🚂</div>
+                        </div>
+                        <div class="text-center p-4 border rounded-lg bg-gray-50 mt-4">
+                            <p class="text-lg text-gray-700">Fastest Train (e.g., TPTY VANDEBHARAT):</p>
+                            <p class="text-3xl font-bold text-orange-600">~8h 15m</p>
+                        </div>
+                         <p class="text-sm text-gray-600 mt-3 text-center">This offers significantly more departure options compared to direct Tiruvannamalai trains.</p>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold text-purple-600 mb-3 text-center">Tirupati to Tiruvannamalai by Bus</h3>
+                         <div class="text-center p-4 border rounded-lg bg-gray-50">
+                            <p class="text-4xl font-bold text-orange-600 mb-2">100+</p>
+                            <p class="text-gray-700">Daily bus services available from Tirupati.</p>
+                             <div class="mt-3 text-2xl text-teal-700">🚌</div>
+                        </div>
+                        <div class="text-center p-4 border rounded-lg bg-gray-50 mt-4">
+                            <p class="text-lg text-gray-700">Average Bus Travel Time:</p>
+                            <p class="text-3xl font-bold text-orange-600">~3h 40m</p>
+                            <p class="text-sm text-gray-600">(Range: 3 to 5 hours)</p>
+                        </div>
+                        <p class="text-sm text-gray-600 mt-3 text-center">Numerous private and state-run (APSRTC) operators serve this route frequently.</p>
+                    </div>
+                </div>
+                <div class="mt-6 p-4 bg-green-100 border-l-4 border-green-500 text-green-700 rounded">
+                    <p><strong class="font-semibold">Combined Efficiency:</strong> This route can offer a total travel time (Train + Bus + Transfer) that is often competitive with or even faster than slower direct trains, with much greater scheduling flexibility.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="other-hubs" class="mb-12">
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-2xl font-bold text-teal-700 mb-6 text-center">Alternative Hubs: Katpadi & Villupuram</h2>
+                <p class="text-center mb-6">Katpadi (KPD) and Villupuram (VM) are major railway junctions that serve as excellent intermediate points for reaching Tiruvannamalai, offering shorter onward road/rail journeys compared to Tirupati.</p>
+                <div class="chart-container h-[350px] md:h-[400px] mx-auto">
+                    <canvas id="hubsOnwardTimeChart"></canvas>
+                </div>
+                <p class="text-sm text-gray-600 mt-3 text-center">Travel times from Katpadi (approx. 92km to TNM) and Villupuram (approx. 56km to TNM) to Tiruvannamalai.</p>
+                <ul class="mt-6 space-y-3">
+                    <li class="p-3 bg-gray-50 rounded-lg border border-gray-200"><strong>From Katpadi (KPD):</strong> ~18 train options from Hyderabad. Onward to Tiruvannamalai by train (1h 20m - 2h) or frequent buses.</li>
+                    <li class="p-3 bg-gray-50 rounded-lg border border-gray-200"><strong>From Villupuram (VM):</strong> Several weekly trains from Hyderabad. Onward to Tiruvannamalai by train (55m - 1h 10m) or very frequent buses (45m - 1h 10m). This is often the actual termination point for some "direct" TNM trains.</li>
+                </ul>
+            </div>
+        </section>
+        
+        <section id="local-insights" class="mb-12">
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-2xl font-bold text-teal-700 mb-6 text-center">✨ Local Insights & Tips for Tiruvannamalai ✨</h2>
+                <p class="text-center mb-6">Curious about what to expect in Tiruvannamalai? Click the button below to get some quick insights on attractions, local culture, or practical tips for your visit, powered by AI.</p>
+                <div class="flex justify-center mb-6">
+                    <button id="getInsightsBtn" class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-6 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105">
+                        Get Tiruvannamalai Insights ✨
+                    </button>
+                </div>
+                <div id="insightsOutput" class="mt-4 p-4 bg-gray-50 rounded-lg border border-gray-200 min-h-[100px] flex items-center justify-center text-gray-600 italic">
+                    Click the button above to get insights.
+                </div>
+                <div id="loadingIndicator" class="hidden text-center mt-4 text-teal-700 font-semibold">
+                    Generating insights... Please wait.
+                </div>
+                <div id="errorDisplay" class="hidden text-center mt-4 text-red-600 font-semibold">
+                    An error occurred. Please try again.
+                </div>
+            </div>
+        </section>
+
+        <section id="route-flow" class="mb-12">
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-2xl font-bold text-teal-700 mb-6 text-center">Which Route is Best for You?</h2>
+                <p class="text-center mb-6">Consider your priorities for convenience, speed, and flexibility.</p>
+                <div class="max-w-2xl mx-auto">
+                    <div class="flowchart-step">
+                        <strong>Start: Planning Hyderabad to Tiruvannamalai</strong>
+                    </div>
+                    <div class="flowchart-connector"></div>
+                    <div class="flowchart-step flowchart-decision">
+                        <strong>Prefer a single-ticket journey?</strong>
+                        <div class="mt-2">
+                            <span class="flowchart-option">Yes</span> <span class="flowchart-option">No/Flexible</span>
+                        </div>
+                    </div>
+                    <div class="flex flex-col md:flex-row justify-around mt-2">
+                        <div class="md:w-1/2 p-2">
+                             <div class="flowchart-connector" style="margin-left: calc(50% - 1px);"></div>
+                            <div class="flowchart-step">
+                                <strong>Option: Direct Train</strong>
+                                <p class="text-sm">Check availability & verify destination (TNM or VM). If VM, plan onward travel (bus/taxi).</p>
+                                <p class="text-xs mt-1">Pros: Convenience. Cons: Lower frequency, "Special" train variability.</p>
+                            </div>
+                        </div>
+                        <div class="md:w-1/2 p-2">
+                            <div class="flowchart-connector" style="margin-left: calc(50% - 1px);"></div>
+                            <div class="flowchart-step">
+                                <strong>Option: Multi-Modal (via Tirupati/Katpadi/VM)</strong>
+                                <p class="text-sm">Train to Hub + Bus/Train to TNM. High flexibility, especially via Tirupati.</p>
+                                <p class="text-xs mt-1">Pros: High frequency, potentially faster. Cons: Requires transfer.</p>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="flowchart-connector"></div>
+                     <div class="flowchart-step">
+                        <strong>Final Check: Book in advance, verify schedules, and enjoy your trip!</strong>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="travel-tips" class="mb-12">
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-2xl font-bold text-teal-700 mb-6 text-center">Essential Travel Tips</h2>
+                <ul class="space-y-4 text-lg">
+                    <li class="flex items-start">
+                        <span class="text-yellow-500 mr-3 text-2xl">🎟️</span> 
+                        <div><strong>Advance Booking:</strong> Secure train and bus tickets early, especially during peak seasons, via official sites or reputable platforms (Paytm, Goibibo, Redbus).</div>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-yellow-500 mr-3 text-2xl">📱</span>
+                        <div><strong>Real-time Status:</strong> Always check live train/bus running status and PNR confirmation. Schedules for "Special" (SPL) trains can be volatile.</div>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-yellow-500 mr-3 text-2xl">🚉</span>
+                        <div><strong>Hyderabad Stations:</strong> Be aware of your departure station (Secunderabad SC, Kacheguda KCG, etc.) and plan local transfers if needed.</div>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-yellow-500 mr-3 text-2xl">🆔</span>
+                        <div><strong>Identification:</strong> Carry valid photo ID for travel.</div>
+                    </li>
+                     <li class="flex items-start">
+                        <span class="text-yellow-500 mr-3 text-2xl">⏰</span>
+                        <div><strong>Timely Arrival:</strong> Reach your departure station/bus point well in advance.</div>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="conclusion" class="text-center">
+            <div class="bg-teal-600 text-white rounded-lg shadow-md p-8">
+                <h2 class="text-2xl font-bold mb-4">Making the Right Choice</h2>
+                <p class="text-lg mb-4">
+                    For <strong class="text-yellow-300">maximum flexibility and frequent departures</strong>, the Hyderabad-Tirupati (train) then Tirupati-Tiruvannamalai (bus) route is highly recommended.
+                </p>
+                <p class="text-lg mb-4">
+                    If a <strong class="text-yellow-300">direct train schedule aligns with your plans</strong>, verify its actual destination (TNM or VM) and operating days carefully.
+                </p>
+                <p class="text-lg">
+                    Routes via <strong class="text-yellow-300">Katpadi or Villupuram</strong> offer balanced alternatives with shorter final leg travel.
+                </p>
+                <p class="mt-6 text-md">Safe travels to Tiruvannamalai!</p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="text-center p-6 mt-8 text-sm text-gray-600">
+        <p>Data based on the "Comprehensive Travel Guide: Hyderabad to Tiruvannamalai by Train and Multi-Modal Routes" report. Infographic generated for illustrative purposes. Always verify current travel information from official sources before your journey.</p>
+        <p>&copy; <span id="currentYear"></span> Travel Insights. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+        const primaryColor = '#00A896'; // Teal
+        const secondaryColor = '#FF6F61'; // Orange
+        const accentYellow = '#FFD700';
+        const accentPurple = '#A4508B';
+        const accentPink = '#FF85A1';
+        const textColor = '#374151'; // gray-700
+
+        function wrapLabel(str, maxWidth) {
+            if (str.length <= maxWidth) return str;
+            const words = str.split(' ');
+            let currentLine = '';
+            const lines = [];
+            for (const word of words) {
+                if ((currentLine + word).length > maxWidth && currentLine.length > 0) {
+                    lines.push(currentLine.trim());
+                    currentLine = '';
+                }
+                currentLine += word + ' ';
+            }
+            lines.push(currentLine.trim());
+            return lines;
+        }
+        
+        const tooltipTitleCallback = function(tooltipItems) {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+              return label.join(' ');
+            } else {
+              return label;
+            }
+        };
+
+        let directTrainsChartInstance; // To hold the Chart.js instance
+
+        const allDirectTrainsData = [
+            { number: '07435', name: 'KCG NCJ SPL', origin: 'Kacheguda (KCG)/Malkajgiri (MJF)', destination: 'Tiruvannamalai (TNM)', days: ['Fri'], duration: 14.75 },
+            { number: '07253', name: 'HYB MDU SPL', origin: 'Secunderabad Jn (SC)', destination: 'Tiruvannamalai (TNM)', days: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'], duration: 14.9 },
+            { number: '07685', name: 'SC RMM SPL', origin: 'Secunderabad Jn (SC)', destination: 'Tiruvannamalai (TNM)', days: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'], duration: 16.42 },
+            { number: '07191', name: 'KCG MDU SPL', origin: 'Kacheguda (KCG)/Malkajgiri (MJF)', destination: 'Tiruvannamalai (TNM)', days: ['Mon'], duration: 17.0 },
+            { number: '07695', name: 'SC RMD SPL', origin: 'Secunderabad Jn (SC)', destination: 'Villupuram (VM)', days: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'], duration: 16.75 },
+            { number: '07161', name: 'SC VLNK SPL', origin: 'Secunderabad Jn (SC)', destination: 'Tiruvannamalai (TNM)', days: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'], duration: 17.13 },
+            { number: '07127', name: 'SC VLNK SPL', origin: 'Secunderabad Jn (SC)', destination: 'Tiruvannamalai (TNM)', days: ['Thu', 'Sat'], duration: 17.5 },
+            { number: '07125', name: 'SC VLNK SPL', origin: 'Secunderabad Jn (SC)', destination: 'Tiruvannamalai (TNM)', days: ['Mon'], duration: 17.0 },
+            { number: '07633', name: 'NED VM SPL', origin: 'Secunderabad Jn (SC)', destination: 'Tiruvannamalai (TNM)', days: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'], duration: 17.63 },
+            { number: '07415', name: 'NED VM SPL', origin: 'Secunderabad Jn (SC)', destination: 'Villupuram (VM)', days: ['Sun'], duration: 17.77 },
+            { number: '07424', name: 'KCG VM SPL', origin: 'Secunderabad Jn (SC)', destination: 'Villupuram (VM)', days: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'], duration: 17.8 },
+            { number: '09520', name: 'OKHA MDU SPL', origin: 'Kacheguda (KCG)', destination: 'Tiruvannamalai (TNM)', days: ['Mon'], duration: 19.0 },
+            { number: '07175', name: 'SC QLN SPL', origin: 'Secunderabad Jn (SC)', destination: 'Tiruvannamalai (TNM)', days: ['Thu'], duration: 15.83 },
+            { number: '07230', name: 'CHZ CAPE SPL', origin: 'Charlapalli (CHZ)', destination: 'Tiruvannamalai (TNM)', days: ['Wed'], duration: 14.83 }
+        ];
+
+        const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+        function filterTrainsByDate(selectedDate) {
+            const dayOfWeek = dayNames[selectedDate.getDay()];
+            return allDirectTrainsData.filter(train => train.days.includes(dayOfWeek));
+        }
+
+        function updateDirectTrainsDisplay(filteredTrains) {
+            const directTrainsTimeCtx = document.getElementById('directTrainsTimeChart').getContext('2d');
+            const directTrainsTableBody = document.getElementById('directTrainsTableBody');
+
+            // Update Chart
+            if (directTrainsChartInstance) {
+                directTrainsChartInstance.destroy(); // Destroy previous chart instance
+            }
+
+            const chartLabels = filteredTrains.map(train => wrapLabel(`${train.name} (${train.number})`, 16));
+            const chartData = filteredTrains.map(train => train.duration);
+
+            directTrainsChartInstance = new Chart(directTrainsTimeCtx, {
+                type: 'bar',
+                data: {
+                    labels: chartLabels,
+                    datasets: [{
+                        label: 'Approx. Travel Time (Hours)',
+                        data: chartData,
+                        backgroundColor: [accentPurple, secondaryColor, accentPink, primaryColor, accentYellow],
+                        borderColor: textColor,
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: { display: true, text: 'Hours', color: textColor },
+                            ticks: { color: textColor }
+                        },
+                        x: { ticks: { color: textColor, maxRotation: 45, autoSkip: false } }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: { callbacks: { title: tooltipTitleCallback } }
+                    }
+                }
+            });
+
+            // Update Table
+            directTrainsTableBody.innerHTML = ''; // Clear existing rows
+            if (filteredTrains.length === 0) {
+                directTrainsTableBody.innerHTML = `<tr><td colspan="3" class="py-4 px-3 text-center italic">No direct trains found for the selected day.</td></tr>`;
+            } else {
+                filteredTrains.forEach((train, index) => {
+                    const row = directTrainsTableBody.insertRow();
+                    row.className = index % 2 === 0 ? 'border-b' : 'border-b bg-gray-50';
+                    row.innerHTML = `
+                        <td class="py-2 px-3">${train.name} (${train.number})</td>
+                        <td class="py-2 px-3">~${train.duration}h</td>
+                        <td class="py-2 px-3">${train.destination}</td>
+                    `;
+                });
+            }
+        }
+
+        // Initialize Date Picker and Filter Trains on Load
+        const travelDateInput = document.getElementById('travelDate');
+        const today = new Date();
+        const todayString = today.toISOString().split('T')[0];
+        travelDateInput.value = todayString; // Set default to today's date
+
+        // Initial load of trains for today
+        updateDirectTrainsDisplay(filterTrainsByDate(today));
+
+        // Event Listener for Date Picker
+        travelDateInput.addEventListener('change', (event) => {
+            const selectedDate = new Date(event.target.value);
+            updateDirectTrainsDisplay(filterTrainsByDate(selectedDate));
+        });
+
+        // Chart 2: Hubs Onward Time Chart (remains unchanged)
+        const hubsOnwardTimeCtx = document.getElementById('hubsOnwardTimeChart').getContext('2d');
+        const hubsLabels = [wrapLabel('Katpadi to TNM', 16), wrapLabel('Villupuram to TNM', 16)];
+        new Chart(hubsOnwardTimeCtx, {
+            type: 'bar',
+            data: {
+                labels: hubsLabels,
+                datasets: [
+                    {
+                        label: 'By Train (Avg Hrs)',
+                        data: [1.7, 1], // Avg hours: KPD-TNM ~1.7, VM-TNM ~1
+                        backgroundColor: accentPurple,
+                        borderColor: textColor,
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'By Bus (Avg Hrs)',
+                        data: [2, 1], // Avg hours: KPD-TNM ~2, VM-TNM ~1
+                        backgroundColor: secondaryColor,
+                        borderColor: textColor,
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: { display: true, text: 'Hours', color: textColor },
+                        ticks: { color: textColor }
+                    },
+                    x: { ticks: { color: textColor } }
+                },
+                plugins: {
+                    legend: { position: 'top', labels: { color: textColor } },
+                    tooltip: { callbacks: { title: tooltipTitleCallback } }
+                }
+            }
+        });
+
+        // Gemini API Integration for Local Insights (remains unchanged)
+        document.getElementById('getInsightsBtn').addEventListener('click', async () => {
+            const insightsOutput = document.getElementById('insightsOutput');
+            const loadingIndicator = document.getElementById('loadingIndicator');
+            const errorDisplay = document.getElementById('errorDisplay');
+
+            insightsOutput.innerHTML = ''; // Clear previous insights
+            errorDisplay.classList.add('hidden'); // Hide error
+            loadingIndicator.classList.remove('hidden'); // Show loading
+
+            try {
+                let chatHistory = [];
+                const prompt = "Provide a concise summary of key attractions, cultural significance, and practical tips for visiting Tiruvannamalai, India. Focus on aspects relevant to a traveler.";
+                chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+                const payload = { contents: chatHistory };
+                const apiKey = ""; // If you want to use models other than gemini-2.0-flash or imagen-3.0-generate-002, provide an API key here. Otherwise, leave this as-is.
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const result = await response.json();
+
+                if (result.candidates && result.candidates.length > 0 &&
+                    result.candidates[0].content && result.candidates[0].content.parts &&
+                    result.candidates[0].content.parts.length > 0) {
+                    const text = result.candidates[0].content.parts[0].text;
+                    insightsOutput.innerHTML = `<p class="text-gray-800">${text}</p>`;
+                } else {
+                    insightsOutput.innerHTML = `<p class="text-gray-600">No insights could be generated.</p>`;
+                    console.error('Unexpected API response structure:', result);
+                }
+            } catch (error) {
+                console.error('Error fetching insights:', error);
+                errorDisplay.classList.remove('hidden');
+                insightsOutput.innerHTML = `<p class="text-gray-600">Failed to load insights. Please check your network connection.</p>`;
+            } finally {
+                loadingIndicator.classList.add('hidden'); // Hide loading
+            }
+        });
+    </script>
+</body>
+</html>
